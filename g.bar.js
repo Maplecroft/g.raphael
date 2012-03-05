@@ -143,6 +143,7 @@
 
         var chartinst = this,
             type = opts.type || "square",
+            bar_data = opts.bar_data || [],
             gutter = parseFloat(opts.gutter || "20%"),
             chart = paper.set(),
             bars = paper.set(),
@@ -210,8 +211,14 @@
             for (var j = 0; j < (multi || 1); j++) {
                 var h = Math.round((multi ? values[j][i] : values[i]) * Y),
                     top = y + height - barvgutter - h,
-                    bar = finger(Math.round(X + barwidth / 2), top + h, barwidth, h, true, type, null, paper).attr({ stroke: "none", fill: colors[multi ? j : i] });
-
+                    bar = finger(Math.round(X + barwidth / 2), top + h, barwidth, h, true, type, null, paper)
+                            .attr({ stroke: "none", fill: colors[multi ? j : i] });
+                    // attach meta data
+                    if (bar_data.length > j && bar_data[j].length > i) {
+                        bar.data('meta',  bar_data[j][i]);
+                    } else {
+                       bar.data('meta', {});
+                    }
                 if (multi) {
                     bars[j].push(bar);
                 } else {
@@ -454,7 +461,14 @@
 
             for (var j = 0; j < (multi || 1); j++) {
                 var val = multi ? values[j][i] : values[i],
-                    bar = finger(x, Y + barheight / 2, Math.round(val * X), barheight - 1, false, type, null, paper).attr({stroke: "none", fill: colors[multi ? j : i]});
+                    bar = finger(x, Y + barheight / 2, Math.round(val * X), barheight - 1, false, type, null, paper)
+                            .attr({stroke: "none", fill: colors[multi ? j : i]});
+                    // attach meta data
+                    if (bar_data.length > j && bar_data[j].length > i) {
+                        bar.data('meta',  bar_data[j][i]);
+                    } else {
+                       bar.data('meta', {});
+                    }
 
                 if (multi) {
                     bars[j].push(bar);
