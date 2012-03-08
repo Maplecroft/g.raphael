@@ -95,6 +95,9 @@
                 p.value = values[i];
                 p.middle = path.middle;
                 p.mangle = mangle;
+                if (opts.metadata && opts.metadata[i]) {
+                    p.metadata = opts.metadata[i];
+                }
                 sectors.push(p);
                 series.push(p);
                 opts.init && p.animate({ path: path.join(",") }, (+opts.init - 1) || 1000, ">");
@@ -103,6 +106,7 @@
             for (i = 0; i < len; i++) {
                 p = paper.path(sectors[i].attr("path")).attr(chartinst.shim);
                 opts.href && opts.href[i] && p.attr({ href: opts.href[i] });
+                //console.log('paper', p);
                 p.attr = function () {};
                 covers.push(p);
                 series.push(p);
